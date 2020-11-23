@@ -15,7 +15,6 @@ const News = ({
   searchTerm,
 }) => {
   console.log(list);
-  console.log(searchTerm);
 
   const renderList = () => {
     return list.map((item, i) => {

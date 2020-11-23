@@ -19,7 +19,7 @@ html, body
     #root
         display: flex
         height: 100%
-        .app
+        .app, .withPopup
             display: flex
             flex-direction: column
             overflow: hidden
@@ -112,6 +112,12 @@ html, body
                             margin: 10px 0
                             resize: none
                             height: 60px
+            .popup
+                position: absolute
+                left: 50%
+                top: 50%
+                transform: translate(-50%,-50%)
+                
 
 
 
@@ -127,14 +133,13 @@ html, body
 
 
 
-
-
-
-
-
-
-
-
+.shading
+        position: absolute
+        width: 100%
+        height: 100%
+        top: 0
+        z-index: 4
+        background-color: rgba(96,96,96,.9)
 
 
 .background

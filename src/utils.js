@@ -11,6 +11,12 @@ const mockUsers = () => {
       password: "user",
       role: "user",
     },
+    {
+      id: 2,
+      login: "user2",
+      password: "user2",
+      role: "user",
+    },
   ];
 
   localStorage.setItem("users", JSON.stringify(users));

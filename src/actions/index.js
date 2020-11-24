@@ -48,7 +48,7 @@ const approve = (id) => (dispatch) => {
 
   const newNewsList = updateList(storedNews, approvedNews, idxToApprove);
   localStorage.setItem("news", JSON.stringify(newNewsList));
-  console.log(newNewsList);
+
   return dispatch({ type: "CHANGE_NEWS", payload: { newNewsList } });
 };
 

@@ -64,7 +64,7 @@ const News = ({
           <input
             type="text"
             name="title"
-            placeholder="Загаловок"
+            placeholder="Заголовок"
             value={title}
             onChange={(e) => onChangeInput(e.target)}
           />

@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { useDidMountEffect } from "../customHooks/didMountEffect";
-import { Route, Switch, withRouter } from "react-router-dom";
-
-//import Preloader from '../preloader'
+import { Route, Switch } from "react-router-dom";
 
 import Header from "../Header";
 import News from "../News";
@@ -17,8 +14,6 @@ const App = ({ user, mount }) => {
   useEffect(() => {
     mount();
   }, []);
-
-  //useDidMountEffect(() => {}, [user]);
 
   return (
     <div className="app">

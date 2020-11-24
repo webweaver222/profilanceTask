@@ -17,14 +17,14 @@ const try_login = () => (dispatch) => {
 
 const post = () => (dispatch, getState) => {
   const {
-    news: { title, body, list },
+    news: { title, body },
     auth: { user },
   } = getState();
 
   const storedNews = JSON.parse(localStorage.getItem("news") || "[]");
 
   const newNews = {
-    id: list.length > 0 ? list[list.length - 1].id + 1 : 1,
+    id: storedNews.length > 0 ? storedNews[0].id + 1 : 1,
     title,
     body,
     approved: user.role === "admin" ? true : false,
@@ -48,7 +48,7 @@ const approve = (id) => (dispatch) => {
 
   const newNewsList = updateList(storedNews, approvedNews, idxToApprove);
   localStorage.setItem("news", JSON.stringify(newNewsList));
-
+  console.log(newNewsList);
   return dispatch({ type: "CHANGE_NEWS", payload: { newNewsList } });
 };
 

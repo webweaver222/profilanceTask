@@ -8,22 +8,16 @@ import "./resources/reset.sass";
 import "./resources/main.sass";
 
 import ErrorBoundry from "./components/error-boundry";
-import { ServiceProvider } from "./components/service-provider";
 import App from "./components/app";
 
-//import diviaiService from './services/diviaiService'
 import store from "./store";
-
-//const service = new diviaiService()
 
 ReactDom.render(
   <Provider store={store}>
     <ErrorBoundry>
-      <ServiceProvider value={null}>
-        <Router>
-          <App />
-        </Router>
-      </ServiceProvider>
+      <Router>
+        <App />
+      </Router>
     </ErrorBoundry>
   </Provider>,
   document.getElementById("root")

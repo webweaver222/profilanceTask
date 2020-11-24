@@ -10,11 +10,13 @@ const LoginContainer = ({
   changeLog,
   changePass,
   onEnter,
+  closeLogin,
 }) => (
   <Login
     render={(error) => {
       return (
         <div className="login-body">
+          <i className="fas fa-times close-login" onClick={closeLogin}></i>
           <h2>Вход</h2>
           {error}
           <div className="log">
@@ -54,6 +56,7 @@ const mapDispatchToProps = (dispatch) => {
     changePass: (password) =>
       dispatch({ type: "CHANGE_PASS_INPUT", payload: { password } }),
     onEnter: () => dispatch(login()),
+    closeLogin: () => dispatch("LOGOUT"),
   };
 };
 

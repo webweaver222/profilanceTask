@@ -3,7 +3,9 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { compose } from "../../utils";
 
-const Header = ({ history, user, logout, login }) => {
+import { logout } from "../../actions";
+
+const Header = ({ history, user, onlogout, login }) => {
   return (
     <div className="header">
       <div className="left">
@@ -13,7 +15,7 @@ const Header = ({ history, user, logout, login }) => {
       <div className="menu">
         <button onClick={() => history.push("/")}>Главная</button>
         <button onClick={() => history.push("/news")}>Новости</button>
-        <button onClick={user ? logout : login}>
+        <button onClick={user ? onlogout : login}>
           {user ? "Выйти" : "Войти"}
         </button>
       </div>
@@ -21,9 +23,14 @@ const Header = ({ history, user, logout, login }) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = ({ auth: { user } }) => ({ user });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: () => dispatch("SHOW_AUTH"),
+    onlogout: () => dispatch(logout()),
+  };
+};
 
 export default compose(
   withRouter,

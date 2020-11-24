@@ -85,7 +85,7 @@ html, body
                             margin-bottom: 10px
                             background-color: rgba($grey, .99)
                             position: relative
-                            .controls
+                            .controls, .warning
                                 position: absolute
                                 top: 7px
                                 right: 7px
@@ -102,6 +102,8 @@ html, body
                             span
                                 font-style: italic
                                 font-size: 14px
+                        li.pending
+                            background-color: #f7b0ab
                     .post-form
                         display: flex
                         flex-direction: column
@@ -114,6 +116,7 @@ html, body
                             height: 60px
             .popup
                 position: absolute
+                z-index: 10
                 left: 50%
                 top: 50%
                 transform: translate(-50%,-50%)

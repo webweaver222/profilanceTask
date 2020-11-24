@@ -5,7 +5,6 @@ import { Route, Switch, withRouter } from "react-router-dom";
 
 //import Preloader from '../preloader'
 
-import Login from "../login";
 import Header from "../Header";
 import News from "../News";
 
@@ -14,12 +13,12 @@ import bgc from "../../resources/svg/background.html";
 
 import { try_login } from "../../actions";
 
-const App = ({ currentUser, mount }) => {
+const App = ({ user, mount }) => {
   useEffect(() => {
     mount();
   }, []);
 
-  useDidMountEffect(() => {}, [currentUser]);
+  //useDidMountEffect(() => {}, [user]);
 
   return (
     <div className="app">
@@ -29,7 +28,7 @@ const App = ({ currentUser, mount }) => {
           <Switch>
             <Route exact path="/">
               <div className="home-page">
-                <h1>Привет, гость</h1>
+                <h1>Привет, {user ? user.login : "гость"}</h1>
               </div>
             </Route>
             <Route exact path="/news">
@@ -44,7 +43,7 @@ const App = ({ currentUser, mount }) => {
 };
 
 export default connect(
-  ({ currentUser }) => ({ currentUser }),
+  ({ auth: { user } }) => ({ user }),
   (dispatch) => {
     return {
       mount: () => dispatch(try_login()),

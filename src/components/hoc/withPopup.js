@@ -1,11 +1,16 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-const WithPopup = ({ children, show = true }) => {
+import Login from "../login";
+
+const WithPopup = ({ children }) => {
+  const show = useSelector(({ auth }) => auth.show);
+
   const shading = show ? <div className="shading"></div> : null;
 
   return (
     <div className="withPopup">
-      <div className="popup">12324</div>
+      <div className="popup">{show && <Login />}</div>
       {children}
       {shading}
     </div>

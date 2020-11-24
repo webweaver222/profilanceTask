@@ -3,7 +3,7 @@ import updateNews from "./updateNews";
 
 const reducer = (state, action) => {
   return {
-    //auth: updateAuth(state, action),
+    auth: updateAuth(state, action),
     news: updateNews(state, action),
   };
 };

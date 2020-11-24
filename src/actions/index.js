@@ -1,40 +1,100 @@
-const try_login = () => dispatch => {
+import { mockUsers, mockNews, getDateString } from "../utils";
+import { updateList } from "../reducers/funcs";
+
+const try_login = () => (dispatch) => {
+  mockUsers();
+  if (!localStorage.getItem("news")) mockNews();
+
+  const storedNews = JSON.parse(localStorage.getItem("news") || "[]");
+
   const user = localStorage.getItem("user");
   if (user) {
-    const chat = JSON.parse(localStorage.getItem("chat") || "[]");
-    if (chat.length > 0) {
-      dispatch({ type: "LOAD_POSTS", payload: chat });
-    }
-
-    return dispatch({ type: "ENTER_CHAT", payload: user });
+    dispatch({ type: "AUTH_SUCCESS", payload: { user: JSON.parse(user) } });
   }
+
+  return dispatch({ type: "LOAD_NEWS", payload: { storedNews } });
 };
 
-const enter = () => (dispatch, getState) => {
-  const { username } = getState();
+const post = () => (dispatch, getState) => {
+  const {
+    news: { title, body, list },
+    auth: { user },
+  } = getState();
 
-  localStorage.setItem("user", username);
+  const storedNews = JSON.parse(localStorage.getItem("news") || "[]");
 
-  return dispatch("ENTER_CHAT");
+  const newNews = {
+    id: list.length > 0 ? list[list.length - 1].id + 1 : 1,
+    title,
+    body,
+    approved: user.role === "admin" ? true : false,
+    date: getDateString(),
+    user: user.id,
+  };
+
+  localStorage.setItem("news", JSON.stringify([newNews, ...storedNews]));
+
+  return dispatch({ type: "ADD_NEWS", payload: { newNews } });
 };
 
-const logout = () => dispatch => {
+const approve = (id) => (dispatch) => {
+  const storedNews = JSON.parse(localStorage.getItem("news") || "[]");
+  const idxToApprove = storedNews.findIndex((item) => item.id === id);
+
+  const approvedNews = {
+    ...storedNews[idxToApprove],
+    approved: true,
+  };
+
+  const newNewsList = updateList(storedNews, approvedNews, idxToApprove);
+  localStorage.setItem("news", JSON.stringify(newNewsList));
+
+  return dispatch({ type: "CHANGE_NEWS", payload: { newNewsList } });
+};
+
+const deletePost = (id) => (dispatch) => {
+  const storedNews = JSON.parse(localStorage.getItem("news") || "[]");
+  const idxToDelete = storedNews.findIndex((item) => item.id === id);
+
+  const newNewsList = updateList(storedNews, "remove", idxToDelete);
+
+  localStorage.setItem("news", JSON.stringify(newNewsList));
+
+  return dispatch({ type: "CHANGE_NEWS", payload: { newNewsList } });
+};
+
+const login = () => (dispatch, getState) => {
+  const {
+    auth: { login, password },
+  } = getState();
+  const storedUsers = JSON.parse(localStorage.getItem("users"));
+
+  const userIdx = storedUsers.findIndex((u) => u.login === login);
+
+  if (userIdx < 0)
+    return dispatch({
+      type: "AUTH_FAIL",
+      payload: { error: "Такого пользователя не найдено" },
+    });
+
+  if (storedUsers[userIdx].password !== password)
+    return dispatch({
+      type: "AUTH_FAIL",
+      payload: { error: "Пароль не совпадает" },
+    });
+
+  localStorage.setItem("user", JSON.stringify(storedUsers[userIdx]));
+
+  return dispatch({
+    type: "AUTH_SUCCESS",
+    payload: { user: storedUsers[userIdx] },
+  });
+};
+
+const logout = () => (dispatch) => {
   localStorage.removeItem("user");
 
   return dispatch("LOGOUT");
 };
 
-const post = () => (dispatch, getState) => {
-  const { chat, message, currentUser } = getState();
-
-  const newMessage = {
-    body: message,
-    user: currentUser
-  };
-
-  localStorage.setItem("chat", JSON.stringify([...chat, newMessage]));
-
-  return dispatch({ type: "POST_MESSAGE", payload: newMessage });
-};
-
-export { try_login, enter, logout, post };
+export { try_login, logout, post, login, approve, deletePost };
